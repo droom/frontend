@@ -549,6 +549,15 @@ object Switches {
     exposeClientSide = true
   )
 
+  val RedirectCommercialExpiry = Switch(
+    "Commercial",
+    "redirect-commercial-expiry",
+    "frontend will redirect content that it considers to be commercially expired.",
+    safeState = On,
+    sellByDate = new LocalDate(2016, 3, 9),
+    exposeClientSide = false
+  )
+
 
   // Monitoring
 
