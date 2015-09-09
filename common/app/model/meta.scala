@@ -146,6 +146,13 @@ object Page {
   }
 }
 
+case class CommercialExpiryPage(override val id: String) extends Page(
+  id,
+  section = "info",
+  webTitle = "This page has been removed",
+  analyticsName = "GFE:Gone"
+)
+
 class TagCombiner(
   id: String,
   val leftTag: Tag,
