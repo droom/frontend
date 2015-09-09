@@ -23,6 +23,7 @@ trait MetaData extends Tags {
 
   def hasSlimHeader: Boolean = contentType == "Interactive" || section == "identity"
 
+  val shouldGoogleIndex: Boolean = true
   lazy val canonicalUrl: Option[String] = None
 
   // Special means "Next Gen platform only".
@@ -151,7 +152,9 @@ case class CommercialExpiryPage(override val id: String) extends Page(
   section = "info",
   webTitle = "This page has been removed",
   analyticsName = "GFE:Gone"
-)
+) {
+  override val shouldGoogleIndex = false
+}
 
 class TagCombiner(
   id: String,
