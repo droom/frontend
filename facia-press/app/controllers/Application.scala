@@ -57,4 +57,18 @@ object Application extends Controller with ExecutionContexts {
   def pressDraftForPath(path: String) = Action.async {
     handlePressRequest(path, "draft")(DraftFapiFrontPress.pressByPathId)
   }
+
+  def pressDraftForAll() = Action.async {
+    ConfigAgent.getPathIds.foldLeft(Future.successful(List[(String, Result)]())){ case (lastFuture, path) =>
+      lastFuture
+        .flatMap(l => handlePressRequest(path, "draft")(DraftFapiFrontPress.pressByPathId)
+        .recover{case _ => InternalServerError("Could not press path")}
+        .map(path -> _)
+        .map(l :+ _))
+    }.map { pressedPaths =>
+      Ok(s"Pressed ${pressedPaths.length} paths on DRAFT: ${pressedPaths.map{ case (a, b) => (a, b.header.status)}}")}
+    .recover { case t: Throwable =>
+        InternalServerError(s"Error pressing all paths on draft: $t")
+    }
+  }
 }
